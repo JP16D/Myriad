@@ -1,16 +1,15 @@
-package dbug;
+package acari;
 
+import acari.ui.*;
 import arc.*;
 import mindustry.game.*;
 import mindustry.mod.*;
 
-import dbug.ui.*;
+public class Acari extends Mod {
 
-public class MDBug extends Mod {
-
-	public MDBug() {
+	public Acari() {
 		Events.run(EventType.Trigger.update, () -> {
-			MDBugTest.load();
+			AcariTest.load();
 			MainPanel.scale();
 		});
 	}

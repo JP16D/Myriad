@@ -1,12 +1,12 @@
-package dbug.tool;
+package acari.tool;
 
 import java.lang.annotation.*;
 import java.lang.reflect.*;
 
 import arc.struct.*;
 
-import static  dbug.util.Identity.*;
-import static dbug.util.ParseUtil.*;
+import static acari.util.Identity.*;
+import static acari.util.ParseUtil.*;
 
 public class Debugger {
 
@@ -50,7 +50,7 @@ public class Debugger {
 	 * @param identity a debug entry query string 
 	 * @param value the debuggable object
 	 * 
-	 * @see dbug.util.ParseIdentity
+	 * @see mite.util.ParseIdentity
 	 */
     public static <T> T debug(String identity, T value) {
 		var id = parse(identity);
@@ -76,45 +76,31 @@ public class Debugger {
         //new Builder();
     }
 
+	//Annotations
 	@Retention(RetentionPolicy.RUNTIME)
-    @Target({
-		ElementType.FIELD,
-		ElementType.METHOD,
-		ElementType.PARAMETER,
-		ElementType.LOCAL_VARIABLE
-	})
-    public @interface Guarded {
-
-		Class<?> value() default void.class;
-
-	}
+    @Target({ 
+		ElementType.FIELD, 
+		ElementType.METHOD, 
+		ElementType.PARAMETER, 
+		ElementType.LOCAL_VARIABLE 
+	}) public @interface Guarded { Class<?> value() default void.class; }
 
     @Retention(RetentionPolicy.RUNTIME)
-	@Target({
-		ElementType.FIELD,
-		ElementType.LOCAL_VARIABLE
-	})
-    public @interface Debugs {
+	@Target({ 
+		ElementType.FIELD, 
+		ElementType.LOCAL_VARIABLE 
+	}) public @interface Debugs { Debug[] value(); }
 
-        Debug[] value();
-
-    }
-
+	@Repeatable(Debugs.class)
     @Retention(RetentionPolicy.RUNTIME)
-    @Target({
-		ElementType.FIELD,
-		ElementType.LOCAL_VARIABLE
-	})
-    @Repeatable(Debugs.class)
-    public @interface Debug {
-
-        String value() default "";
-
-    }
+    @Target({ 
+		ElementType.FIELD, 
+		ElementType.LOCAL_VARIABLE 
+	}) public @interface Debug { String value() default ""; }
 
     /**
      * Automatically scans an object instance (or class for static fields) and
-     * registers all @Debug annotated fields.
+     * registers all annotated fields.
      */
     public static void register(Object target) {
         if (target == null) return;
@@ -124,13 +110,13 @@ public class Debugger {
         var instance = isClass ? null : target;
 		//
         for (Field field : type.getDeclaredFields()) {
-			field = guardRegister(field, instance);
-			field = debugRegister(field, instance);
+			guardRegister(field, instance);
+			debugRegister(field, instance);
         }
     }
 
 	private static Field guardRegister(Field field, Object instance) {
-		if (field.isAnnotationPresent(Guarded.class) || field.isAnnotationPresent(Debug.class)) try {
+		if (field.isAnnotationPresent(Guarded.class)) try {
 			var guard = field.getAnnotation(Guarded.class);
 			var ftype = guard.value() != void.class ? guard.value() : field.getType();
 			var value = field.get(instance);

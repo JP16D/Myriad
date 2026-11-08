@@ -2,12 +2,14 @@ Have you ever thought it is a hassle to re-install your mod just to change a few
 
 Well... Then say no more!!
 
-MinD-Bug aims to be the do it all debugger/tester/experimentation tool for mindustry mod development, giving you some quality of life tools such as value monitoring and in-game experimental tools. To make it work simply follow the guides right here:
+Myriad is a Mindustry java library that aims to be the do it all mod development support, providing the most convenient development QoL features such as runtime data monitoring and experimentation tools. To get started with the basics, you can check out the following guides right here:
 
-- [Applying Dependency]()
-- [Value Debugger]()
-- [Error Catcher]()
+- [Getting Started]()
+- [Documentation]()
+- [Debug Tool]()
 
-### Planned Features:
-- Operators and Functions - on the go math sorcery for testing out stuffs
-- Experimental Ragdoll - unit and block placholders for experimental designing of animations, parts, and behaviours of your custom units!
+---
+These library is composed of multiple modules:
+
+- **Acari** - The core module for the runtime tool engine. Requires installation of Myriad:Acari mod to fully utilize.
+- **Papilio** - supplementary module for mindustry ui, a direct extension of Arc Scene component library.

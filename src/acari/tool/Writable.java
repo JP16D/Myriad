@@ -1,15 +1,14 @@
-package dbug.tool;
+package acari.tool;
 
 import java.lang.reflect.*;
 
+import acari.ui.*;
 import arc.graphics.*;
 import arc.struct.*;
 import arc.util.*;
 
-import dbug.ui.*;
-
-import static dbug.ui.DebugField.*;
-import static dbug.util.ParseUtil.*;
+import static acari.ui.DebugField.*;
+import static acari.util.ParseUtil.*;
 
 public class Writable extends Viewable {
 

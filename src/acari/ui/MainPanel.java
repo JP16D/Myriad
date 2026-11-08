@@ -1,4 +1,4 @@
-package dbug.ui;
+package acari.ui;
 
 import arc.*;
 import arc.math.geom.*;
@@ -8,7 +8,7 @@ import arc.scene.utils.*;
 import arc.struct.*;
 import mindustry.gen.*;
 
-import static dbug.tool.Debugger.*;
+import static acari.tool.Debugger.*;
 
 public class MainPanel {
 

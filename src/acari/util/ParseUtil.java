@@ -1,4 +1,4 @@
-package dbug.util;
+package acari.util;
 
 import arc.struct.*;
 

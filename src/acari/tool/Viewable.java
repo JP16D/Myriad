@@ -1,8 +1,8 @@
-package dbug.tool;
+package acari.tool;
 
-import dbug.ui.*;
+import acari.ui.*;
 
-import static dbug.ui.DebugField.*;
+import static acari.ui.DebugField.*;
 
 public class Viewable {
 		

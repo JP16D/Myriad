@@ -1,5 +1,6 @@
-package dbug.ui;
+package acari.ui;
 
+import acari.tool.*;
 import arc.func.*;
 import arc.graphics.*;
 import arc.graphics.g2d.*;
@@ -11,9 +12,7 @@ import arc.util.*;
 import mindustry.gen.*;
 import mindustry.ui.*;
 
-import dbug.tool.*;
-
-import static dbug.util.ParseUtil.*;
+import static acari.util.ParseUtil.*;
 
 public class DebugField extends Table {
     private final Color highlight = new Color(Color.slate);
@@ -90,7 +89,7 @@ public class DebugField extends Table {
                         var v = entry.field().get(group.get());
                         hint.set(entry.priority() ? v.toString() : "--");
                         entry.set(v);
-                    } catch (IllegalAccessException | IllegalArgumentException e) {}
+                    } catch (Exception e) {}
                 });
                 //
                 field.content.add(viewable(hint)).pad(4f);

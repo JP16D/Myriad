@@ -1,8 +1,8 @@
-displayName: "[lime]MinD-Bug"
-name: "mdbug"
+displayName: "[lime]Myriad:Acari"
+name: "myriad-acari"
 author: "JP16D"
-main: "dbug.MDBug"
-description: "Runtime mod debugging and experimentations"
+main: "acari.Acari"
+description: "Runtime mod debugging and experimentation tools"
 version: 1.0
 minGameVersion: 157
 java: true

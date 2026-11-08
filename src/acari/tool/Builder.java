@@ -1,4 +1,4 @@
-package dbug.tool;
+package acari.tool;
 
 import arc.scene.ui.layout.*;
 import arc.struct.*;
