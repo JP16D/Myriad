@@ -50,7 +50,7 @@ public class Debugger {
 	 * @param identity a debug entry query string 
 	 * @param value the debuggable object
 	 * 
-	 * @see mite.util.ParseIdentity
+	 * @see acari.util.Identity
 	 */
     public static <T> T debug(String identity, T value) {
 		var id = parse(identity);

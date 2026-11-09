@@ -13,3 +13,31 @@ These library is composed of multiple modules:
 
 - **Acari** - The core module for the runtime tool engine. Requires installation of Myriad:Acari mod to fully utilize.
 - **Papilio** - supplementary module for mindustry ui, a direct extension of Arc Scene component library.
+
+## Project layout
+
+```
+Myriad/
+├── settings.gradle.kts        # includes :acari and :papilio
+├── build.gradle.kts           # shared config (repos, Java 17, Arc/Mindustry, publishing)
+├── gradle.properties          # group, version, Mindustry/Arc/Android versions
+├── myriad-acari/                     # library + installable mod
+│   ├── build.gradle.kts       # mod.hjson generation, deploy/dex, install/runClient
+│   ├── assets/                # mod assets (icon.png, ...)
+│   └── src/main/java/acari/
+└── myriad-papilio/                   # UI library
+    ├── build.gradle.kts
+    └── src/main/java/papilio/
+```
+
+## Building
+
+```
+./gradlew :acari:dex          # build/libs/MyriadAcari.jar (desktop + Android)
+./gradlew :acari:deploy       # desktop-only jar
+./gradlew :acari:install      # copy into your Mindustry mods folder
+./gradlew :acari:runClient    # install and launch Mindustry
+./gradlew publishToMavenLocal # publish both libraries locally
+```
+
+`mod.hjson` is generated into `acari/build/generated/mod/` by `:acari:hjson`; edit the metadata in `acari/build.gradle.kts` and the version in `gradle.properties`. Android dexing needs `ANDROID_HOME` (or `sdk.dir` in `local.properties`).
