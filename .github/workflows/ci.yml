@@ -3,7 +3,8 @@ name: Build Mod
 on: [push, pull_request]
 
 jobs:
-  buildJar:
+  build:
+    name: Acari Build
     runs-on: ubuntu-latest
 
     steps:
@@ -24,5 +25,5 @@ jobs:
       uses: actions/upload-artifact@v7
       with:
         archive: false
-        name: ${{ github.event.repository.name }}:Acari
-        path: myriad-acari/build/libs/MyriadAcari.jar
+        name: ${{ github.event.repository.name }}
+        path: myriad-acari/build/libs/${{ github.event.repository.name }}.jar

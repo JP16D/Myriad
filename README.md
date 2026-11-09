@@ -18,7 +18,7 @@ These library is composed of multiple modules:
 
 ```
 Myriad/
-├── settings.gradle.kts        # includes :acari and :papilio
+├── settings.gradle.kts        # includes :myriad-acari and :papilio
 ├── build.gradle.kts           # shared config (repos, Java 17, Arc/Mindustry, publishing)
 ├── gradle.properties          # group, version, Mindustry/Arc/Android versions
 ├── myriad-acari/                     # library + installable mod
@@ -33,11 +33,10 @@ Myriad/
 ## Building
 
 ```
-./gradlew :acari:dex          # build/libs/MyriadAcari.jar (desktop + Android)
-./gradlew :acari:deploy       # desktop-only jar
-./gradlew :acari:install      # copy into your Mindustry mods folder
-./gradlew :acari:runClient    # install and launch Mindustry
+./gradlew :myriad-acari:dex          # build/libs/MyriadAcari.jar (desktop + Android)
+./gradlew :myriad-acari:deploy       # desktop-only jar
+./gradlew :myriad-acari:install      # copy into your Mindustry mods folder
+./gradlew :myriad-acari:runClient    # install and launch Mindustry
 ./gradlew publishToMavenLocal # publish both libraries locally
 ```
 
-`mod.hjson` is generated into `acari/build/generated/mod/` by `:acari:hjson`; edit the metadata in `acari/build.gradle.kts` and the version in `gradle.properties`. Android dexing needs `ANDROID_HOME` (or `sdk.dir` in `local.properties`).

@@ -8,7 +8,8 @@ permissions:
   contents: write
 
 jobs:
-  buildJar:
+  build:
+    name: Acari Build
     runs-on: ubuntu-latest
 
     steps:
@@ -30,5 +31,5 @@ jobs:
         GH_TOKEN: ${{ github.token }}
       run: |
         gh release upload "${{ github.event.release.tag_name }}" \
-          "myriad-acari/build/libs/MyriadAcari.jar" \
+          "myriad-acari/build/libs/${{ github.event.repository.name }}.jar" \
           --clobber
