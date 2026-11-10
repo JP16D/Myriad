@@ -20,10 +20,10 @@ jobs:
     - name: Build mod jar
       run: |
         chmod +x ./gradlew
-        ./gradlew :myriad-acari:dex
+        ./gradlew :acari:dex
     - name: Upload built jar file
       uses: actions/upload-artifact@v7
       with:
         archive: false
         name: ${{ github.event.repository.name }}
-        path: myriad-acari/build/libs/${{ github.event.repository.name }}.jar
+        path: modules/acari/build/libs/${{ github.event.repository.name }}.jar

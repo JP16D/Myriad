@@ -12,7 +12,7 @@ Myriad is a Mindustry java library that aims to be the do it all mod development
 
 These library is composed of multiple modules:
 
-- **Acari** - The core module for the runtime tool engine. Requires installation of [Myriad Acari](./myriad/acari/) mod to fully utilize.
+- **Acari** - The core module for the runtime tool engine. Requires installation of [Myriad Acari](./modules/acari/) mod to fully utilize.
 - **Papilio** - An extension module for Arc ui and graphics.
 
 ---
@@ -20,15 +20,14 @@ These library is composed of multiple modules:
 Myriad/
 ├── settings.gradle.kts        
 ├── build.gradle.kts           
-├── gradle.properties  
-└── myriad/    
-	├── acari/              	# mindustry modding tools
-	│   ├── build.gradle.kts       
-	│   ├── assets/                
-	│   └── src/acari/
-	└── papilio/            	# arc ui extension library
-		├── build.gradle.kts
-		└── src/papilio/
+├── gradle.properties          
+├── modules/acari/              # mindustry modding tools
+│   ├── build.gradle.kts       
+│   ├── assets/                
+│   └── src/acari/
+└── modules/papilio/            # arc ui extension library
+    ├── build.gradle.kts
+    └── src/papilio/
 ```
 
 ## Building

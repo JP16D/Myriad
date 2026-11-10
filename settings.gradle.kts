@@ -5,6 +5,6 @@ if (JavaVersion.current() < JavaVersion.VERSION_17) {
 rootProject.name = "Myriad"
 
 include(":acari")
-project(":acari").projectDir = file("myriad/acari")
+project(":acari").projectDir = file("modules/acari")
 include(":papilio")
-project(":papilio").projectDir = file("myriad/papilio")
+project(":papilio").projectDir = file("modules/papilio")
