@@ -10,9 +10,9 @@ import java.util.Properties
  * ---------------------------------------------------------------------------------------------- */
 
 val projectName = rootProject.name.replace(Regex("[^a-zA-Z0-9]"), "")
-val sdkVersion: String by project
-val sdkAPI: String by project
-val mindustryVersion: String by project
+val sdkVersion = project.property("sdkVersion").toString()
+val sdkAPI = project.property("sdkAPI").toString()
+val mindustryVersion = project.property("mindustryVersion").toString()
 
 val isWindows = System.getProperty("os.name").lowercase().contains("windows")
 
@@ -22,7 +22,7 @@ val sdkRoot: String? = System.getenv("ANDROID_HOME")
         Properties().apply { f.inputStream().use(::load) }.getProperty("sdk.dir")
     }
 
-val deploy by tasks.registering(Jar::class) {
+val deploy = tasks.register<Jar>("deploy") {
     group = "myriad"
     description = "Assembles the desktop mod jar."
 
@@ -35,7 +35,7 @@ val deploy by tasks.registering(Jar::class) {
     from(tasks.named("hjson"))
 }
 
-val dex by tasks.registering(Jar::class) {
+val dex = tasks.register<Jar>("dex") {
     group = "myriad"
     description = "Assembles the final mod jar: desktop classes plus Android dex."
 
@@ -96,7 +96,7 @@ tasks.register<Copy>("install") {
     into(mindustryDir.zip(isSteam) { dir, steam -> File(dir, if (steam) "saves/mods" else "mods") })
 }
 
-val installClient by tasks.registering {
+val installClient = tasks.register("installClient") {
     group = "myriad"
     description = "Downloads the Mindustry client $mindustryVersion into the run directory if needed."
 

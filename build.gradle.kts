@@ -83,7 +83,7 @@ subprojects {
             }
         }
 		
-        val hjson by tasks.registering(ModHjson::class) {
+        val hjson = tasks.register<ModHjson>("hjson") {
             displayName = rootProject.property("mod.displayName").toString()
             modName = project.projectDir.name
             author = rootProject.property("mod.author").toString()
