@@ -4,6 +4,7 @@ if (JavaVersion.current() < JavaVersion.VERSION_17) {
 
 rootProject.name = "Myriad"
 
-// Acari   - runtime tool engine, also shipped as an installable mod
-// Papilio - Mindustry UI extension library on top of Arc scene
-include(":myriad-acari", ":myriad-papilio")
+include(":acari")
+project(":acari").projectDir = file("myriad/acari")
+include(":papilio")
+project(":papilio").projectDir = file("myriad/papilio")

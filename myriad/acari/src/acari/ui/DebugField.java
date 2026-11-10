@@ -134,6 +134,11 @@ public class DebugField extends Table {
 
     public static Table writable(Writable entry) {
         Prov<String> str = () -> entry.get() != null ? entry.get().toString() : "null";
+		//
+		if (wrap(entry.type()) == Boolean.class) return new Table(t -> {
+			t.button("true", () -> {});
+		});
+		//
         var field = Elem.newField(str.get(), (String txt) -> {
             entry.push(parse(entry.type(), entry.get(), txt));
         });

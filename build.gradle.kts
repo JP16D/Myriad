@@ -30,15 +30,28 @@ subprojects {
     configure<JavaPluginExtension> {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
-        sourceSets.named("main") { java.setSrcDirs(listOf("src")) }
         withSourcesJar()
         // withJavadocJar()
+    }
+
+    // Per-project source set configuration
+    when (project.name) {
+        "acari" -> {
+            configure<JavaPluginExtension> {
+                sourceSets.named("main") { java.setSrcDirs(listOf("src")) }
+            }
+        }
+        "papilio" -> {
+            configure<JavaPluginExtension> {
+                sourceSets.named("main") { java.setSrcDirs(listOf("src")) }
+            }
+        }
     }
 
 
 
     // Optional mod.hjson generation for acari module.
-    if (project.name == "myriad-acari") {
+    if (project.name == "acari") {
         abstract class ModHjson : DefaultTask() {
             @get:Input abstract val displayName: Property<String>
             @get:Input abstract val modName: Property<String>

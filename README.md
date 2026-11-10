@@ -8,35 +8,37 @@ Myriad is a Mindustry java library that aims to be the do it all mod development
 - [Documentation]()
 - [Debug Tool]()
 
----
-These library is composed of multiple modules:
-
-- **Acari** - The core module for the runtime tool engine. Requires installation of Myriad:Acari mod to fully utilize.
-- **Papilio** - supplementary module for mindustry ui, a direct extension of Arc Scene component library.
-
 ## Project layout
 
+These library is composed of multiple modules:
+
+- **Acari** - The core module for the runtime tool engine. Requires installation of [Myriad Acari](./myriad/acari/) mod to fully utilize.
+- **Papilio** - An extension module for Arc ui and graphics.
+
+---
 ```
 Myriad/
-├── settings.gradle.kts        # includes :myriad-acari and :papilio
-├── build.gradle.kts           # shared config (repos, Java 17, Arc/Mindustry, publishing)
-├── gradle.properties          # group, version, Mindustry/Arc/Android versions
-├── myriad-acari/                     # library + installable mod
-│   ├── build.gradle.kts       # mod.hjson generation, deploy/dex, install/runClient
-│   ├── assets/                # mod assets (icon.png, ...)
-│   └── src/main/java/acari/
-└── myriad-papilio/                   # UI library
-    ├── build.gradle.kts
-    └── src/main/java/papilio/
+├── settings.gradle.kts        
+├── build.gradle.kts           
+├── gradle.properties  
+└── myriad/    
+	├── acari/              	# mindustry modding tools
+	│   ├── build.gradle.kts       
+	│   ├── assets/                
+	│   └── src/acari/
+	└── papilio/            	# arc ui extension library
+		├── build.gradle.kts
+		└── src/papilio/
 ```
 
 ## Building
 
 ```
-./gradlew :myriad-acari:dex          # build/libs/MyriadAcari.jar (desktop + Android)
-./gradlew :myriad-acari:deploy       # desktop-only jar
-./gradlew :myriad-acari:install      # copy into your Mindustry mods folder
-./gradlew :myriad-acari:runClient    # install and launch Mindustry
+./gradlew :acari:dex          # desktop + android jar (needs Android SDK)
+./gradlew :acari:deploy       # desktop-only jar
+./gradlew :acari:install      # copy into your Mindustry mods folder
+./gradlew :acari:runClient    # install and launch Mindustry
+./gradlew deployAll           # build deploy jars for all modules
+./gradlew build               # standard build (compile, test, jar + deploy)
 ./gradlew publishToMavenLocal # publish both libraries locally
 ```
-
