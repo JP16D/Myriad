@@ -5,6 +5,6 @@ author: "JP16D"
 main: "acari.Acari"
 description: "Runtime mod debugging and experimentation tools"
 version: "1.0"
-minGameVersion: 157
+minGameVersion: 160
 java: true
 hidden: true

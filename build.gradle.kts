@@ -40,6 +40,12 @@ subprojects {
             configure<JavaPluginExtension> {
                 sourceSets.named("main") { java.setSrcDirs(listOf("src")) }
             }
+            // Depend on papilio for Grid layout
+            afterEvaluate {
+                dependencies {
+                    "implementation"(project(":papilio"))
+                }
+            }
         }
         "papilio" -> {
             configure<JavaPluginExtension> {
@@ -134,4 +140,15 @@ tasks.register("deployAll") {
 // Hook deployAll into build lifecycle via subprojects
 subprojects {
     tasks.named("build") { dependsOn(rootProject.tasks.named("deployAll")) }
+}
+
+// Root-level publish tasks
+tasks.register("publishAll") {
+    group = "publishing"
+    description = "Publishes all subprojects to configured repositories"
+    subprojects.forEach { subproject ->
+        if (subproject.tasks.findByName("publish") != null) {
+            dependsOn(subproject.tasks.named("publish"))
+        }
+    }
 }

@@ -33,6 +33,9 @@ val deploy = tasks.register<Jar>("deploy") {
     from({ configurations.runtimeClasspath.get().map { if (it.isDirectory) it else zipTree(it) } })
     from("assets")
     from(tasks.named("hjson"))
+    
+    // Ensure papilio is built first
+    dependsOn(":papilio:jar")
 }
 
 val dex = tasks.register<Jar>("dex") {
@@ -86,14 +89,60 @@ val mindustryDir: Provider<File> = providers.gradleProperty("mindustryPath")
     .map(::File)
     .orElse(rootProject.layout.projectDirectory.dir("run").asFile)
 
+val mindustryJar: Provider<File> = providers.gradleProperty("mindustryJar")
+    .map(::File)
+
 val isSteam = mindustryDir.map { File(it, "Mindustry.exe").exists() }
 
-tasks.register<Copy>("install") {
+// Get the Mindustry data directory based on OS
+fun getMindustryDataDir(): File {
+    val home = File(System.getProperty("user.home"))
+    val os = System.getProperty("os.name").lowercase()
+    return when {
+        os.contains("win") -> File(home, "AppData/Roaming/Mindustry")
+        os.contains("mac") -> File(home, "Library/Application Support/Mindustry")
+        else -> File(home, ".local/share/Mindustry") // Linux and others
+    }
+}
+
+// Check if Android SDK is available
+fun hasAndroidSdk(): Boolean {
+    if (System.getenv("ANDROID_HOME") != null) return true
+    val localProps = rootProject.file("local.properties")
+    if (localProps.exists()) {
+        val props = Properties()
+        localProps.inputStream().use { props.load(it) }
+        if (props.getProperty("sdk.dir") != null) return true
+    }
+    return false
+}
+
+tasks.register("install") {
     group = "myriad"
     description = "Copies the mod jar into the Mindustry mods folder."
-
-    from(dex)
-    into(mindustryDir.zip(isSteam) { dir, steam -> File(dir, if (steam) "saves/mods" else "mods") })
+    dependsOn(if (hasAndroidSdk()) "dex" else "deploy")
+    
+    doLast {
+        val dataDir = getMindustryDataDir()
+        val modsDir = File(dataDir, "mods")
+        modsDir.mkdirs()
+        
+        val sourceJarTask = if (hasAndroidSdk()) tasks.named<Jar>("dex") else tasks.named<Jar>("deploy")
+        val jarFile = sourceJarTask.get().archiveFile.get().asFile
+        val destName = if (jarFile.name.endsWith("Desktop.jar")) {
+            jarFile.name.replace("Desktop.jar", ".jar")
+        } else {
+            jarFile.name
+        }
+        val destFile = File(modsDir, destName)
+        
+        copy {
+            from(jarFile)
+            into(modsDir)
+            rename { destName }
+        }
+        logger.lifecycle("Installed $destName to $modsDir")
+    }
 }
 
 val installClient = tasks.register("installClient") {
@@ -125,15 +174,40 @@ tasks.register("runClient") {
 
     val dir = mindustryDir
     val steam = isSteam
+    val sourceDir: Provider<File> = providers.gradleProperty("mindustrySource")
+        .map(::File)
     doLast {
         val root = dir.get()
-        val client = if (steam.get()) File(root, "Mindustry.exe") else File(root, "client-$mindustryVersion.jar")
-        val saves = if (steam.get()) File(root, "saves") else root
-
-        logger.lifecycle("> Starting Mindustry.")
-        val cmd = if (steam.get()) listOf(client.path) else listOf("java", "-jar", client.path, "-debug")
-        val pb = ProcessBuilder(cmd).directory(saves).inheritIO()
-        pb.environment()["MINDUSTRY_DATA_DIR"] = saves.path
+        val srcRoot = sourceDir.getOrNull()?.takeIf { it.exists() }
+        val dataDir = getMindustryDataDir()
+        
+        // Use configured launcher if available
+        val (cmd, workingDir) = when {
+            mindustryJar.getOrNull()?.let { it.exists() } == true && srcRoot != null -> {
+                // Source-built jar: run from user's Mindustry data directory (avoids run/ fallback)
+                Pair(listOf("java", "-Dmindustry.data.dir=${dataDir.path}", "-jar", mindustryJar.get().path, "-debug"), dataDir)
+            }
+            mindustryJar.getOrNull()?.let { it.exists() } == true -> {
+                // JRE + desktop.jar (no source dir)
+                Pair(listOf("java", "-Dmindustry.data.dir=${dataDir.path}", "-jar", mindustryJar.get().path, "-debug"), root)
+            }
+            steam.get() -> {
+                // Steam (Windows)
+                Pair(listOf(File(root, "Mindustry.exe").path), File(root, "saves"))
+            }
+            File(root, "Mindustry").exists() -> {
+                // Linux standalone binary
+                Pair(listOf(File(root, "Mindustry").path), root)
+            }
+            else -> {
+                // Fallback: downloaded jar
+                Pair(listOf("java", "-Dmindustry.data.dir=${dataDir.path}", "-jar", File(root, "client-$mindustryVersion.jar").path, "-debug"), root)
+            }
+        }
+        
+        logger.lifecycle("> Starting Mindustry (data dir: $dataDir).")
+        val pb = ProcessBuilder(cmd).directory(workingDir).inheritIO()
+        pb.environment()["MINDUSTRY_DATA_DIR"] = dataDir.path
         pb.environment()["DEVELOPMENT"] = "true"
         pb.start().waitFor()
     }

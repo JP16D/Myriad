@@ -37,7 +37,5 @@ Myriad/
 ./gradlew :acari:deploy       # desktop-only jar
 ./gradlew :acari:install      # copy into your Mindustry mods folder
 ./gradlew :acari:runClient    # install and launch Mindustry
-./gradlew deployAll           # build deploy jars for all modules
-./gradlew build               # standard build (compile, test, jar + deploy)
-./gradlew publishToMavenLocal # publish both libraries locally
+./gradlew build               # standard build (compile, test, jar + deploy all)
 ```

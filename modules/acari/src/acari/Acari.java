@@ -33,7 +33,7 @@ public class Acari extends Mod {
 		//
 		@Guarded
 		@Debug("(writable):5")
-		public static Table table;
+		public static Table layout = new Table();
 		
 		public static void load() {
 			debug("test-vx", test.x);
